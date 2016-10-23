@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 
 public class KyeCook_Assign2_GUI extends JFrame implements ActionListener{
+    /*
+    Creates objects within the JFrame. Objects created here can be seen by user
+     */
 
     JButton newGameButton = new JButton("New Game");
     JButton exitGameButton = new JButton("Exit Game");
@@ -33,6 +36,9 @@ public class KyeCook_Assign2_GUI extends JFrame implements ActionListener{
         setVisible(true);
     }
 
+    /*
+    Checks pushed buttons and performs action accordingly
+     */
     @Override
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
@@ -49,6 +55,9 @@ public class KyeCook_Assign2_GUI extends JFrame implements ActionListener{
 
     }
 
+    /*
+    Methods from first assignment changed to suit GUI
+     */
     private static int getNumPlayers() {
         int numberOfPlayers = 0;
 
@@ -62,15 +71,20 @@ public class KyeCook_Assign2_GUI extends JFrame implements ActionListener{
             }
         }
 
-        JOptionPane.showMessageDialog(null, numberOfPlayers);
         return numberOfPlayers;
     }
 
+    /*
+    Initialising the GUI
+     */
     public static void main(String[] args)
     {
         KyeCook_Assign2_GUI frame = new KyeCook_Assign2_GUI();
     }
 
+    /*
+    Running gameplay elements. Same as first assignment
+     */
     private static STGame startNewGame(){
         int numPlayers = getNumPlayers();
         STGame game = new STGame(numPlayers);

@@ -1,20 +1,28 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class PlayerTurnGUI extends JFrame{
+/*
+Code in current state is not in working order. To get into working order further implementation within STGame is needed
+ */
+
+public class PlayerTurnGUI extends JFrame implements ActionListener{
+    boolean toPass;
+
 
     STGame gameReference;
 
     JButton passButton = new JButton("Pass");
+    JButton playCardsButton = new JButton("Play");
 
     JPanel labelPanel = new JPanel();
-    JPanel cardsPanel = new JPanel();
+
 
     JLabel titleLabel = new JLabel("Your Turn");
     JLabel instructionsLabel = new JLabel("");
 
-    JList cards = new JList();
 
 
     public PlayerTurnGUI(STGame g){
@@ -23,8 +31,8 @@ public class PlayerTurnGUI extends JFrame{
         setLayout(new GridLayout(3,1));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(labelPanel);
-        add(cardsPanel);
         add(passButton);
+        add(playCardsButton);
 
         labelPanel.add(titleLabel);
         labelPanel.add(instructionsLabel);
@@ -32,12 +40,25 @@ public class PlayerTurnGUI extends JFrame{
         instructionsLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
         instructionsLabel.setText("\nChoose a card to play [1-" + g.playerCardAmount +"]\n or pass:");
 
-        cardsPanel.add(cards);
 
-
+        passButton.addActionListener(this);
+        playCardsButton.addActionListener(this);
 
         setSize(400, 350);
         setVisible(true);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
+        Object source = e.getSource();
+
+        if(source == passButton){
+            toPass = true;
+        }
+        else if(source == playCardsButton){
+            toPass = false;
+        }
 
     }
 

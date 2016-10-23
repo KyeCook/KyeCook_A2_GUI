@@ -10,7 +10,7 @@ Game class that features all code required for actual gameplay
  */
 public class STGame {
 
-    PlayerTurnGUI gui;
+//    PlayerTurnGUI gui;
 
     /*
     Constant determines amount of cards dealt to each player
@@ -46,7 +46,7 @@ public class STGame {
         this.numPlayers = numPlayers;
         deck = new STDeck();
 
-        gui = new PlayerTurnGUI(this);
+//        gui = new PlayerTurnGUI(this);
     }
 
     /*
@@ -153,74 +153,91 @@ public class STGame {
     play cards and or pass the round.
      */
     public void showPlayerTurn() {
-        int selectedOption;
+        int selectedOption = 0;
+        int selectedMenuOption;
+
+
         playerCardAmount = players[humanPlayerId].playerDeck().size();
 
-        gui.repaint();
-        gui.setVisible(true);
-        gui.requestFocus();
+//        gui.repaint();
+//        gui.setVisible(true);
+//        gui.requestFocus();
 
 
-        System.out.println(this.getHumanPlayer());
 
-        Scanner userSelection = new Scanner(System.in);
         /*
         Try Statement prevents users from entering in non-numeric inputs into scanner
          */
-        try {
-            System.out.println("\nChoose a card to play [1-" + playerCardAmount +"] or pass [0] :");
-            selectedOption = userSelection.nextInt();
 
-            /*
-            While loop error checks users int inputs to ensure they are within the appropriate range
-             */
-            while(selectedOption < 0 || selectedOption > playerCardAmount){
-                System.out.println("Choose a card to play [1-" + playerCardAmount +"] or pass [0] :");
-                selectedOption = userSelection.nextInt();
+//        if(gui.toPass){
+//            System.out.println("Turn Passed");
+//            ArrayList<STCard>  drawnCard = deck.dealCards(1);
+//            players[humanPlayerId].playerDeck().addAll(drawnCard);
+//
+//            System.out.println(players[humanPlayerId].playerDeck());
+//
+//        }
+//        else {
+
+        /*
+        Code Below Sets buttons to custom String
+         */
+        UIManager.put("OptionPane.noButtonText", "Pass Turn");
+        UIManager.put("OptionPane.yesButtonText", "Play Card");
+        UIManager.put("OptionPane.cancelButtonText", "Quit Game");
+
+        selectedMenuOption = JOptionPane.showConfirmDialog(null, "Press Play if you wish place a card. Pass to " +
+                "pass the turn. And Quit will exit you from the game\n\t Current Card in play is : " + cardInPlay
+                + "\t\nYour Deck is : " + players[humanPlayerId].playerDeck());
+
+        if(selectedMenuOption == JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "Turn Passed");
+            ArrayList<STCard>  drawnCard = deck.dealCards(1);
+            players[humanPlayerId].playerDeck().addAll(drawnCard);
+        }
+        else if(selectedMenuOption == JOptionPane.CANCEL_OPTION){
+            System.exit(0);
+        }
+        else {
+            try {
+                selectedOption = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the card you wish to play\n" +
+                        players[humanPlayerId].playerDeck()));
+
+                while (selectedOption < 0 || selectedOption > playerCardAmount) {
+                    Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the card you wish to play\n" +
+                            players[humanPlayerId].playerDeck()));
+                }
+                if (selectedOption < cardInPlay) {
+                    Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the card you wish to play\n" +
+                            players[humanPlayerId].playerDeck()));
+                }
+                else if(selectedOption == JOptionPane.CANCEL_OPTION) {
+                    System.exit(0);
+                    }
+                else {
+                    System.out.println(players[humanPlayerId].playerDeck().get(selectedOption - 1) + "  is played");
+
+                    cardInPlay = players[humanPlayerId].playerDeck().get(selectedOption - 1).getId();
+
+                    players[humanPlayerId].playerDeck().remove(selectedOption - 1);
+
+
+                    System.out.println(players[humanPlayerId].playerDeck());
+
+                }
+
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Incorrect input type. Please make sure valid integer is inputted");
             }
-
-            /*
-            If statement checks user input to see what selection is chosen be it pass or to play the card
-            If card is played it will show the cards id and set it as new card to beat (cardInPlay)
-             */
-
-//            USE BOOLEAN FROM PLAYERTURN like we did to intialise it
-            if(selectedOption == 0){
-                System.out.println("Turn Passed");
-                ArrayList<STCard>  drawnCard = deck.dealCards(1);
-                players[humanPlayerId].playerDeck().addAll(drawnCard);
-
-                System.out.println(players[humanPlayerId].playerDeck());
-
-            }
-            /*
-            Error checks to make sure player can only play cards that are higher than current card in play.
-             */
-            else if(selectedOption < cardInPlay){
-                System.out.println("Choose a card to play [1-" + playerCardAmount +"] or pass [0] :");
-                userSelection.nextInt();
-            }
-            else {
-                System.out.println(players[humanPlayerId].playerDeck().get(selectedOption - 1) + "  is played");
-
-                cardInPlay = players[humanPlayerId].playerDeck().get(selectedOption - 1).getId();
-
-                players[humanPlayerId].playerDeck().remove(selectedOption - 1);
-
-
-                System.out.println(players[humanPlayerId].playerDeck());
-
-            }
-
-        } catch(InputMismatchException e) {
-            System.out.println("Incorrect input type. Please make sure valid integer is inputted");
-            showPlayerTurn();
         }
 
-        System.out.println("\nCard to Beat :" + cardInPlay + '\n');
-
+        JOptionPane.showMessageDialog(null, "\nCard to Beat :" + cardInPlay + '\n');
 
     }
+
+
+
 
     /*
     Bot players turn. Runs code bot will perform during its turn
@@ -255,7 +272,7 @@ public class STGame {
         Sets Card to be played and removed by bot
          */
         players[botPlayerId].playerDeck().remove(botCards.size());
-//        
+//
         JOptionPane.showMessageDialog(null, "\nCard to Beat :" + cardInPlay + '\n');
     }
 
