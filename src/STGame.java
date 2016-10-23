@@ -215,14 +215,11 @@ public class STGame {
                     System.exit(0);
                     }
                 else {
-                    System.out.println(players[humanPlayerId].playerDeck().get(selectedOption - 1) + "  is played");
+                    JOptionPane.showMessageDialog(null, players[humanPlayerId].playerDeck().get(selectedOption - 1) + " is played");
 
                     cardInPlay = players[humanPlayerId].playerDeck().get(selectedOption - 1).getId();
 
                     players[humanPlayerId].playerDeck().remove(selectedOption - 1);
-
-
-                    System.out.println(players[humanPlayerId].playerDeck());
 
                 }
 
